@@ -33,33 +33,108 @@ export async function addShipToRequest(shipId:number){
 
 // получить одну заявку по id
 export async function getRequestShip(id: number | string) {
-  const url = new URL(`/api/request_ship/${id}`, window.location.origin).toString()
-  const res = await fetch(url)
+  const token = getToken()
+  const headers: Record<string,string> = {'Content-Type': 'application/json'}
+  if (token) headers['Authorization'] = 'Bearer ' + token
+
+  const url = `${API_BASE}/request_ship/${id}`
+  const res = await fetch(url, {
+    method: 'GET',
+    headers,
+    credentials: 'include'
+  })
+
   if (!res.ok) {
     const text = await res.text().catch(()=> '')
     throw new Error('HTTP ' + res.status + (text ? ': ' + text : ''))
   }
   const j = await res.json().catch(()=>null)
-  if (j && j.data && typeof j.data === 'object') return j.data
-  return j ?? {}
+  if (!j) return {}
+  // normalize common shapes
+  const data = j.data ?? j
+  return data
 }
 
 // получить корзину/черновик
 export async function getRequestShipBasket() {
-  console.log('[DEBUG api] getRequestShipBasket token=', getToken());
-  const res = await fetch('/api/request_ship/basket')
+  const token = getToken()
+  const headers: Record<string,string> = {'Content-Type': 'application/json'}
+  if (token) headers['Authorization'] = 'Bearer ' + token
+
+  const res = await fetch(`${API_BASE}/request_ship/basket`, {
+    method: 'GET',
+    headers,
+    credentials: 'include'
+  })
   if (!res.ok) {
     const text = await res.text().catch(()=> '')
     throw new Error('HTTP ' + res.status + (text ? ': ' + text : ''))
   }
   const j = await res.json().catch(()=>null)
   if (!j) return null
-  if (j.data && typeof j.data === 'object') {
-    return {
-      request_ship_id: j.data.request_ship_id ?? j.data.requestShipId ?? j.data.requestShipID ?? null,
-      ships_count: j.data.ships_count ?? j.data.shipsCount ?? j.count ?? null,
-      raw: j.data
-    }
+  const payload = j.data ?? j
+
+  // return normalized small object the redirect/consumer expects
+  return {
+    request_ship_id: payload.request_ship_id ?? payload.RequestShipID ?? payload.id ?? payload.requestShipId ?? null,
+    ships_count: payload.ships_count ?? payload.ShipsCount ?? payload.count ?? null,
+    raw: payload
   }
-  return j
+}
+
+// удалить конкретный корабль из заявки
+export async function deleteShipFromRequest(requestId: number | string, shipId: number | string) {
+  const token = getToken()
+  const headers: Record<string,string> = {'Content-Type': 'application/json'}
+  if (token) headers['Authorization'] = 'Bearer ' + token
+
+  const res = await fetch(`${API_BASE}/request_ship/${requestId}/ships/${shipId}`, {
+    method: 'POST', // backend expects _method=DELETE via form; we emulate direct DELETE if supported
+    headers,
+    credentials: 'include',
+    body: JSON.stringify({ _method: 'DELETE' })
+  })
+  if (!res.ok) {
+    const txt = await res.text().catch(()=> '')
+    throw new Error('HTTP ' + res.status + (txt ? ': ' + txt : ''))
+  }
+  return res.json().catch(()=>null)
+}
+
+// удалить всю заявку
+export async function deleteRequestShip(requestId: number | string) {
+  const token = getToken()
+  const headers: Record<string,string> = {'Content-Type': 'application/json'}
+  if (token) headers['Authorization'] = 'Bearer ' + token
+
+  const res = await fetch(`${API_BASE}/request_ship/${requestId}`, {
+    method: 'POST',
+    headers,
+    credentials: 'include',
+    body: JSON.stringify({ _method: 'DELETE' })
+  })
+  if (!res.ok) {
+    const txt = await res.text().catch(()=> '')
+    throw new Error('HTTP ' + res.status + (txt ? ': ' + txt : ''))
+  }
+  return res.json().catch(()=>null)
+}
+
+// рассчитать время погрузки (POST)
+export async function calculateLoadingTime(requestId: number | string, payload: { containers_20ft?: number, containers_40ft?: number, comment?: string }) {
+  const token = getToken()
+  const headers: Record<string,string> = {'Content-Type': 'application/json'}
+  if (token) headers['Authorization'] = 'Bearer ' + token
+
+  const res = await fetch(`${API_BASE}/request_ship/calculate_loading_time/${requestId}`, {
+    method: 'POST',
+    headers,
+    credentials: 'include',
+    body: JSON.stringify(payload)
+  })
+  if (!res.ok) {
+    const txt = await res.text().catch(()=> '')
+    throw new Error('HTTP ' + res.status + (txt ? ': ' + txt : ''))
+  }
+  return res.json().catch(()=>null)
 }
