@@ -1,6 +1,9 @@
 import { getToken } from './auth'
 const API_BASE = '/api'
 
+// включить mock режим через .env (VITE_USE_MOCK=true)
+const USE_MOCK = (import.meta.env?.VITE_USE_MOCK ?? '').toString() === 'true'
+
 export async function getShips(params?: { search?: string }) {
   const url = new URL(API_BASE + '/ships', window.location.origin)
   if (params?.search) url.searchParams.set('search', params.search)
@@ -85,14 +88,13 @@ export async function getRequestShipBasket() {
 // удалить конкретный корабль из заявки
 export async function deleteShipFromRequest(requestId: number | string, shipId: number | string) {
   const token = getToken()
-  const headers: Record<string,string> = {'Content-Type': 'application/json'}
+  const headers: Record<string, string> = {}
   if (token) headers['Authorization'] = 'Bearer ' + token
 
   const res = await fetch(`${API_BASE}/request_ship/${requestId}/ships/${shipId}`, {
-    method: 'POST', // backend expects _method=DELETE via form; we emulate direct DELETE if supported
+    method: 'DELETE',
     headers,
     credentials: 'include',
-    body: JSON.stringify({ _method: 'DELETE' })
   })
   if (!res.ok) {
     const txt = await res.text().catch(()=> '')

@@ -41,49 +41,34 @@ async function load(idToLoad: string | undefined) {
   if (!idToLoad) return
   try {
     setLoading(true)
-    const data = await getRequestShip(idToLoad)
-    // `data` может быть уже normalized (data.request_ship_id ..) или raw payload
-    const payload = data?.data ?? data ?? {}
+    const data = await getRequestShip(idToLoad) 
 
-    // нормализация top-level полей
-    const requestShipId = payload.request_ship_id ?? payload.RequestShipID ?? payload.id ?? payload.requestShipId
-    const containers20 = payload.containers_20ft ?? payload.containers_20ft_count ?? payload.Containers20ftCount ?? payload.containers20ft ?? 0
-    const containers40 = payload.containers_40ft ?? payload.containers_40ft_count ?? payload.Containers40ftCount ?? payload.containers40ft ?? 0
-    const commentVal = payload.comment ?? payload.Comment ?? ''
-    const loadingTimeVal = payload.loading_time ?? payload.LoadingTime ?? payload.loadingTime ?? ''
+    const payload = data?.data ?? data
 
-    // нормализация массива кораблей: может быть flat (ship_id, name, ...) или вложенный {Ship: {...}, ShipsCount: ...}
-    const rawShips = payload.ships ?? payload.Ships ?? payload.data?.ships ?? payload.data?.Ships ?? []
-    const shipsNormalized = (Array.isArray(rawShips) ? rawShips : []).map((si: any) => {
-      // если уже в виде { Ship: {...} }
-      if (si && si.Ship) {
-        return {
-          Ship: {
-            ShipID: si.Ship.ShipID ?? si.Ship.ship_id ?? si.Ship.id,
-            Name: si.Ship.Name ?? si.Ship.name,
-            PhotoURL: si.Ship.PhotoURL ?? si.Ship.photo_url,
-            Capacity: si.Ship.Capacity ?? si.Ship.capacity,
-            Length: si.Ship.Length ?? si.Ship.length,
-            Width: si.Ship.Width ?? si.Ship.width,
-            Cranes: si.Ship.Cranes ?? si.Ship.cranes
-          },
-          ShipsCount: si.ShipsCount ?? si.ships_count ?? si.shipsCount ?? 1
-        }
-      }
-      // если элемент плоский (ship_id, name, ...)
-      return {
-        Ship: {
-          ShipID: si.ship_id ?? si.ShipID ?? si.id,
-          Name: si.name ?? si.Name,
-          PhotoURL: si.photo_url ?? si.PhotoURL,
-          Capacity: si.capacity ?? si.Capacity,
-          Length: si.length ?? si.Length,
-          Width: si.width ?? si.Width,
-          Cranes: si.cranes ?? si.Cranes
-        },
-        ShipsCount: si.ships_count ?? si.ShipsCount ?? si.shipsCount ?? 1
-      }
-    })
+    if (!payload || typeof payload !== 'object') {
+      throw new Error('Unexpected request_ship payload')
+    }
+
+    const requestShipId = payload.request_ship_id
+    const containers20 = payload.containers_20ft_count ?? 0
+    const containers40 = payload.containers_40ft_count ?? 0
+    const commentVal = payload.comment ?? ''
+    const loadingTimeVal = payload.loading_time ?? ''
+
+    const rawShips = Array.isArray(payload.ships) ? payload.ships : []
+
+    const shipsNormalized = rawShips.map((si: any) => ({
+      Ship: {
+        ShipID: si.ship_id,
+        Name: si.name,
+        PhotoURL: si.photo_url,
+        Capacity: si.capacity,
+        Length: si.length,
+        Width: si.width,
+        Cranes: si.cranes
+      },
+      ShipsCount: si.ships_count ?? 1
+    }))
 
     const rs: RequestShip = {
       RequestShipID: requestShipId,
@@ -109,6 +94,7 @@ async function load(idToLoad: string | undefined) {
     setLoading(false)
   }
 }
+
 
 
   useEffect(()=> {

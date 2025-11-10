@@ -18,7 +18,7 @@ export default function ShipCard({ship}:{ship:any}){
 
   const handleAdd = async (e:any) => {
     e.preventDefault()
-    const token = getToken()
+    const token = getToken() 
     if(!token) {
       navigate('/login')
       return
