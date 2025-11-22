@@ -51,7 +51,6 @@ export default function LoginPage(){
 
   return (
     <div style={{display:'flex', flexDirection:'column', alignItems:'center'}}>
-      <header style={{marginTop:10}}><a href="/ships"><img className="home-img header-icon" src="/resources/img/home-img.svg" alt="home" /></a></header>
       <div style={{width:600, marginTop:40, background:'#3A3A3A', padding:30, borderRadius:6}}>
         <h2>Вход</h2>
         {error ? <div style={{color:'red'}}>{error}</div> : null}

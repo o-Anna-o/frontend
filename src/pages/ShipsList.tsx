@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import Navbar from '../components/Navbar'
 import ShipCard from '../components/ShipCard'
 import { useShips } from '../hooks/useShips'
 
@@ -10,7 +9,6 @@ export default function ShipsList(){
 
   return (
     <div style={{display:'flex', flexDirection:'column', alignItems:'center'}}>
-      <Navbar />
       <form className="page__search" onSubmit={(e)=>{ e.preventDefault(); setQ(search) }} style={{marginTop:10}}>
         <input className="search-input page__search-input page__search-item" type="text" name="search" placeholder="Поиск контейнеровоза" value={search} onChange={e=>setSearch(e.target.value)} />
         <button className="btn search-btn page__search-item" type="submit">Найти</button>

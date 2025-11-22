@@ -20,9 +20,7 @@ export default function ShipPage(){
 
   return (
     <div style={{display:'flex', flexDirection:'column', alignItems:'center'}}>
-      <header style={{marginTop:10}}>
-        <a href="/ships"><img className="home-img header-icon" src="/resources/img/home-img.svg" alt="home" /></a>
-      </header>
+      
       <div className="ship-card" style={{backgroundColor:'#3A3A3A', borderRadius:5, padding:'33px 120px', display:'flex', flexDirection:'column', alignItems:'center', gap:30}}>
         <h1>{ship.name ?? ship.Name}</h1>
         {src && <img className="ship-card__img" src={src} alt={ship.name ?? ship.Name} style={{width:814}}/>}

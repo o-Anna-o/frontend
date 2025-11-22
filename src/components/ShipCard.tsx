@@ -18,7 +18,7 @@ export default function ShipCard({ship}:{ship:any}){
 
   const handleAdd = async (e:any) => {
     e.preventDefault()
-    const token = getToken()
+    const token = getToken() 
     if(!token) {
       navigate('/login')
       return
@@ -26,7 +26,6 @@ export default function ShipCard({ship}:{ship:any}){
     try {
       await addShipToRequest(Number(id))
       window.dispatchEvent(new Event('lt:basket:refresh'))
-      alert('Корабль добавлен в заявку')
     } catch(err:any) {
       alert('Ошибка при добавлении: ' + (err.message || 'unknown'))
     }

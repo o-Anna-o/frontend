@@ -1,0 +1,30 @@
+/* resources/css/Breadcrumbs.css */
+
+.breadcrumbs {
+  position: fixed;         
+  top: 74px;               
+  left: 400px;
+  color: white;
+  font-size: 25px;
+  font-weight: 500;
+  z-index: 10;
+}
+
+
+.breadcrumbs a {
+  color: white;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.breadcrumbs a:hover {
+  color: #AA9B7D;       
+}
+
+@media (max-width: 900px) {
+  .breadcrumbs {
+    top: 74px;
+    left: 20px;
+    font-size: 18px;
+  }
+}

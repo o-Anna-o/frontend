@@ -1,10 +1,41 @@
+// src/api.ts
 import { getToken } from './auth'
 const API_BASE = '/api'
 
-export async function getShips(params?: { search?: string }) {
+// НЕ используем mock здесь — только бэкенд
+export type ShipsFilterParams = {
+  search?: string
+  capacity_min?: number
+  capacity_max?: number
+  cranes_min?: number
+  cranes_max?: number
+}
+
+export async function getShips(params?: ShipsFilterParams) {
+  // логирование для диагностики
+  console.log('[api.getShips] called with', params)
+
   const url = new URL(API_BASE + '/ships', window.location.origin)
-  if (params?.search) url.searchParams.set('search', params.search)
-  const res = await fetch(url.toString())
+
+  if (params?.search) url.searchParams.set('search', String(params.search))
+  if (typeof params?.capacity_min === 'number') url.searchParams.set('capacity_min', String(params.capacity_min))
+  if (typeof params?.capacity_max === 'number') url.searchParams.set('capacity_max', String(params.capacity_max))
+  if (typeof params?.cranes_min === 'number') url.searchParams.set('cranes_min', String(params.cranes_min))
+  if (typeof params?.cranes_max === 'number') url.searchParams.set('cranes_max', String(params.cranes_max))
+
+  // ещё лог — покажет итоговый URL в консоли браузера
+  console.log('[api.getShips] fetch ->', url.toString())
+
+  const res = await fetch(url.toString(), {
+    method: 'GET',
+    credentials: 'include'
+  })
+
+  if (!res.ok) {
+    const text = await res.text().catch(()=> '')
+    throw new Error('HTTP ' + res.status + (text ? ': ' + text : ''))
+  }
+
   const j = await res.json().catch(()=>null)
   if (j && j.data && Array.isArray(j.data)) return j.data
   if (j && Array.isArray(j)) return j
@@ -85,14 +116,13 @@ export async function getRequestShipBasket() {
 // удалить конкретный корабль из заявки
 export async function deleteShipFromRequest(requestId: number | string, shipId: number | string) {
   const token = getToken()
-  const headers: Record<string,string> = {'Content-Type': 'application/json'}
+  const headers: Record<string, string> = {}
   if (token) headers['Authorization'] = 'Bearer ' + token
 
   const res = await fetch(`${API_BASE}/request_ship/${requestId}/ships/${shipId}`, {
-    method: 'POST', // backend expects _method=DELETE via form; we emulate direct DELETE if supported
+    method: 'DELETE',
     headers,
     credentials: 'include',
-    body: JSON.stringify({ _method: 'DELETE' })
   })
   if (!res.ok) {
     const txt = await res.text().catch(()=> '')
