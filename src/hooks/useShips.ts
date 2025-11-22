@@ -1,4 +1,4 @@
-
+// src/hooks/useShips.ts
 import { useEffect, useRef, useState } from 'react'
 import { getShips, ShipsFilterParams } from '../api'
 
@@ -21,6 +21,7 @@ export function useShips(param?: UseShipsArg) {
     return p
   }
 
+  // keep paramRef in sync
   useEffect(() => {
     paramRef.current = param
   }, [param])
@@ -35,11 +36,24 @@ export function useShips(param?: UseShipsArg) {
         setError(null)
         try {
           const params = normalize(paramRef.current)
+          console.log('[useShips] load with params:', params)
           const res = await getShips(params)
+          console.log("🚢 API RAW RESPONSE:", res)
+
           if (cancelled || fetchId !== fetchIdRef.current) return
           const arr = Array.isArray(res) ? res : (res?.data ?? res ?? [])
-          setShips(Array.isArray(arr) ? arr : [])
-        } catch (e:any) {
+          let result = Array.isArray(arr) ? arr : []
+          
+          // дополнительная фильтрация на фронтенде:
+          if (params?.search) {
+            const searchLower = params.search.toLowerCase()
+            result = result.filter(ship =>
+              typeof ship.Name === 'string' && ship.Name.toLowerCase().includes(searchLower)
+            )
+          }
+
+          setShips(result)
+        } catch (e: any) {
           if (!cancelled) setError(String(e?.message ?? e))
         } finally {
           if (!cancelled) setLoading(false)
@@ -52,7 +66,7 @@ export function useShips(param?: UseShipsArg) {
       clearTimeout(timer)
     }
    
-  }, [])
+  }, [param])
 
   return { ships, loading, error, setShips }
 }
