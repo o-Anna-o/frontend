@@ -2,6 +2,8 @@
 import React, { useEffect, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { getRequestShip, deleteShipFromRequest, deleteRequestShip, calculateLoadingTime } from '../api'
+import ShipListIcon from '../components/ShipListIcon'
+import Breadcrumbs from '../components/Breadcrumbs'
 
 type ShipInRequest = {
   Ship: {
@@ -152,6 +154,10 @@ async function load(idToLoad: string | undefined) {
   if (loading) return <div style={{padding:20}}>Загрузка...</div>
 
   return (
+    <>
+    <ShipListIcon />
+    <Breadcrumbs />
+    
     <div style={{display:'flex', flexDirection:'column', alignItems:'center'}}>
       
       <div className="request" style={{width:1350, display:'flex', flexDirection:'column', alignItems:'center', gap:30, backgroundColor:'#3A3A3A', borderRadius:5, padding:'33px 120px'}}>
@@ -255,6 +261,9 @@ async function load(idToLoad: string | undefined) {
         )}
       </div>
     </div>
+
+    </>
+  
   )
 }
 

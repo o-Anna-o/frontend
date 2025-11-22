@@ -7,15 +7,12 @@ import RequestShipPage from './pages/RequestShipPage'
 import LoginPage from './pages/LoginPage'
 import RegisterPage from './pages/RegisterPage'
 import HomePage from './pages/HomePage'
-import Navbar from './components/Navbar'
-import Breadcrumbs from './components/Breadcrumbs'
 
 export default function App(){
   return (
     <BrowserRouter>
-      <Navbar />         
-      <Breadcrumbs />
-      <div className="page-content" style={{ marginTop: '80px' }}> 
+    
+      <div className="page-content" style={{ marginTop: '20px' }}> 
         <Routes>
             <Route path='/' element={<HomePage/>} />
             <Route path='/ships' element={<ShipsList/>} />

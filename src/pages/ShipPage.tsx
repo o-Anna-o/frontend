@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { getShips } from '../api'
+import ShipListIcon from '../components/ShipListIcon'
+import Breadcrumbs from '../components/Breadcrumbs'
 
 export default function ShipPage(){
   const { id } = useParams()
@@ -19,6 +21,10 @@ export default function ShipPage(){
   const src = ship.photo_url ?? ship.PhotoURL ? ('http://localhost:9000/loading-time-img/img/' + (ship.photo_url ?? ship.PhotoURL)) : ''
 
   return (
+    <>
+    <ShipListIcon />
+    <Breadcrumbs />
+      
     <div style={{display:'flex', flexDirection:'column', alignItems:'center'}}>
       
       <div className="ship-card" style={{backgroundColor:'#3A3A3A', borderRadius:5, padding:'33px 120px', display:'flex', flexDirection:'column', alignItems:'center', gap:30}}>
@@ -33,5 +39,6 @@ export default function ShipPage(){
         </div>
       </div>
     </div>
+    </>
   )
 }

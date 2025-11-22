@@ -1,11 +1,13 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import Navbar from '../components/Navbar'
+import ShipListIcon from '../components/ShipListIcon'
 import Breadcrumbs from '../components/Breadcrumbs'
 
 export default function HomePage() {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+      
+      <ShipListIcon />
       <Breadcrumbs />
 
       <div style={{
@@ -20,22 +22,8 @@ export default function HomePage() {
         <p style={{ marginTop: 20 }}>
           Добро пожаловать! Вы можете перейти к списку кораблей, чтобы рассчитать время погрузки.
         </p>
-        <Link
-          to="/ships"
-          style={{
-            display: 'inline-block',
-            marginTop: '30px',
-            backgroundColor: '#AA9B7D',
-            color: 'white',
-            padding: '10px 20px',
-            borderRadius: '5px',
-            textDecoration: 'none',
-            fontWeight: 'bold'
-          }}
-        >
-          Перейти к списку кораблей
-        </Link>
       </div>
     </div>
+    
   )
 }
