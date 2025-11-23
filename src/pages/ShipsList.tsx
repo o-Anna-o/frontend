@@ -50,29 +50,20 @@ export default function ShipsList() {
         {loading && <div style={{ marginTop: 20 }}>Загрузка...</div>}
         {error && <div style={{ marginTop: 20, color: 'red' }}>{error}</div>}
 
-        <ul className="ship-cards" style={{ listStyle: 'none', padding: 0, marginTop: 20 }}>
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(2, 1fr)',
-              gap: 28,
-              justifyContent: 'center',
-            }}
-          >
-            {ships.map((s: any) => {
-              const id =
-                s.ship_id ??
-                s.ShipID ??
-                s.id ??
-                s.ID
+        <ul className="ship-cards">
+          {ships.map((s: any) => {
+            const id =
+              s.ship_id ??
+              s.ShipID ??
+              s.id ??
+              s.ID
 
-              return (
-                <div key={id} style={{ display: 'flex', justifyContent: 'center' }}>
-                  <ShipCard ship={s} />
-                </div>
-              )
-            })}
-          </div>
+            return (
+              <li key={id}>
+                <ShipCard ship={s} />
+              </li>
+            )
+          })}
         </ul>
       </div>
     </>
