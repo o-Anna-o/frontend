@@ -11,7 +11,7 @@ import HomePage from './pages/HomePage'
 
 export default function App(){
   return (
-    <BrowserRouter>  {/*<BrowserRouter basename="/frontend">*/}
+    <BrowserRouter basename="/frontend">
     
       <div className="page-content" style={{ marginTop: '20px' }}> 
         <Routes>
