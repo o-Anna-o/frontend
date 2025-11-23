@@ -1,3 +1,4 @@
+// src/store/slices/filterSlice.ts
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 interface FilterState {

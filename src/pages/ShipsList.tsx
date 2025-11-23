@@ -1,4 +1,5 @@
-import React from 'react'
+// src/pages/ShipsList.tsx
+import React, { useEffect } from 'react'
 import Navbar from '../components/Navbar'
 import Breadcrumbs from '../components/Breadcrumbs'
 import ShipCard from '../components/ShipCard'
@@ -11,11 +12,16 @@ export default function ShipsList() {
   const search = useAppSelector(state => state.filter.search)
   const appliedSearch = useAppSelector(state => state.filter.appliedSearch)
 
+  // при загрузке/возврате синхронизируем input со значением appliedSearch
+  useEffect(() => {
+    dispatch(setSearch(appliedSearch))
+  }, [appliedSearch, dispatch])
+
   const { ships, loading, error } = useShips(appliedSearch)
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    dispatch(applySearch()) // только применяем текущее search
+    dispatch(applySearch())
   }
 
   return (
@@ -33,8 +39,8 @@ export default function ShipsList() {
             className="search-input page__search-input page__search-item"
             type="text"
             placeholder="Поиск контейнеровоза"
-            value={search} 
-            onChange={e => dispatch(setSearch(e.target.value))} 
+            value={search}
+            onChange={e => dispatch(setSearch(e.target.value))}
           />
           <button className="btn search-btn page__search-item" type="submit">
             Найти
@@ -53,11 +59,19 @@ export default function ShipsList() {
               justifyContent: 'center',
             }}
           >
-            {ships.map((s) => (
-              <div key={s.ship_id ?? s.ShipID} style={{ display: 'flex', justifyContent: 'center' }}>
-                <ShipCard ship={s} />
-              </div>
-            ))}
+            {ships.map((s: any) => {
+              const id =
+                s.ship_id ??
+                s.ShipID ??
+                s.id ??
+                s.ID
+
+              return (
+                <div key={id} style={{ display: 'flex', justifyContent: 'center' }}>
+                  <ShipCard ship={s} />
+                </div>
+              )
+            })}
           </div>
         </ul>
       </div>

@@ -1,4 +1,7 @@
+// src/components/ShipListIcon.tsx
+
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 export default function ShipListIcon() {
   return (
@@ -10,13 +13,13 @@ export default function ShipListIcon() {
         position: 'relative'
       }}
     >
-      <a href="/ships">
+      <Link to="/ships">
         <img
           src="/resources/img/home-img.svg"
           alt="home"
           style={{ height: 40 }}
         />
-      </a>
+      </Link>
     </div>
   )
 }
