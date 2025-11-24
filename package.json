@@ -1,7 +1,8 @@
 {
-  "name": "loading-time-frontend",
+  "name": "frontend",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://o-anna-o.github.io/frontend/",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
