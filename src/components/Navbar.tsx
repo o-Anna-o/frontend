@@ -65,8 +65,12 @@ export default function Navbar() {
         )}
       </div>
 
-      <Link to="/ships">
-        <img src="/resources/img/home-img.svg" alt="home" style={{ height: 40 }} />
+      <Link to="/ships" style={{
+          textDecoration: 'none',
+          color: '#fff',
+          fontSize: '32px'
+        }}>
+        Контейнеровозы
       </Link>
     </div>
   )

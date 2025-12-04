@@ -1,5 +1,5 @@
 // src/App.tsx
-import React from 'react'
+
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import ShipsList from './pages/ShipsList'
 import ShipPage from './pages/ShipPage'
@@ -11,7 +11,7 @@ import HomePage from './pages/HomePage'
 
 export default function App(){
   return (
-    <BrowserRouter basename="/frontend">
+    <BrowserRouter>
     
       <div className="page-content" style={{ marginTop: '20px' }}> 
         <Routes>

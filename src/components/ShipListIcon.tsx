@@ -5,20 +5,17 @@ import { Link } from 'react-router-dom'
 
 export default function ShipListIcon() {
   return (
-    <div
+    <div className="breadcrumbs"
       style={{
         width: '100%',
+        fontSize: '',
         display: 'flex',
         justifyContent: 'center',
         position: 'relative'
       }}
     >
       <Link to="/ships">
-        <img
-          src="/resources/img/home-img.svg"
-          alt="home"
-          style={{ height: 40 }}
-        />
+              Контейнеровозы
       </Link>
     </div>
   )

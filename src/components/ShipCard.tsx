@@ -1,13 +1,12 @@
-import React from 'react'
+
 import { Link, useNavigate } from 'react-router-dom'
-import defaultImg from '../assets/default.png'
 import { addShipToRequest } from '../api'
 import { getToken } from '../auth'
 import '../../resources/ShipCard.css'
 
 export default function ShipCard({ ship }: { ship: any }) {
   const buildImgSrc = (p?: string | null) => {
-    if (!p) return defaultImg
+    if (!p) return '/default.png'
     try { new URL(p); return p }
     catch (e) { return 'http://localhost:9000/loading-time-img/img/' + p }
   }
