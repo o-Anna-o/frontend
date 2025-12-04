@@ -2,6 +2,9 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 
+import ShipListIcon from '../components/ShipListIcon'
+import AuthLink from '../components/AuthLink'
+
 const CART_ICON_BASE64 =
   'iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAn0lEQVR4nO3QMQ4BURSF4ckUEol1qGgobIGFaaxIi0ah0lAohE0QkU9GRvcGY15iIv72nXv+d2+S/BzoYq08a3RelTex8zl7tJ4JxnlwhbTE1imW+eykKNTGCVcM3i1/gH4+e0EvFJiKxywkyH4fi3NIcCepiKKerwnQwDZwhkVMwSYgmEcRlOUveMlfUG/BUTwOIcEoe4hRjmHVS9SHGxku7S0HDKVsAAAAAElFTkSuQmCC'
 
@@ -65,13 +68,11 @@ export default function Navbar() {
         )}
       </div>
 
-      <Link to="/ships" style={{
-          textDecoration: 'none',
-          color: '#fff',
-          fontSize: '32px'
-        }}>
-        Контейнеровозы
-      </Link>
+      <div style={{  display: 'flex', gap: '60px' }}>
+        <ShipListIcon />
+        <AuthLink />
+      </div>
+
     </div>
   )
 }
