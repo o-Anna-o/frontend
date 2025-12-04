@@ -63,6 +63,16 @@ export default function LoginPage(){
           </div>
           <button className="btn" type="submit">Войти</button>
         </form>
+
+        <div style={{ marginTop: 15 }}>
+          Нет аккаунта?{' '}
+          <span
+            style={{ color: '#AA9B7D', cursor: 'pointer' }}
+            onClick={() => navigate('/register')}
+          >
+            Зарегистрироваться
+          </span>
+        </div>
       </div>
     </div>
   )

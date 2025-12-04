@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { getShips } from '../api'
+import { getShips } from '../apiLegacy'
 import ShipListIcon from '../components/ShipListIcon'
 import Breadcrumbs from '../components/Breadcrumbs'
 import mock from '../mock'

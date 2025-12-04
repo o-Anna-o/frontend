@@ -28,7 +28,7 @@ export default function AuthLink() {
             cursor: 'pointer'
           }}
         >
-          Выйти
+          Выход
         </a>
       ) : (
         <Link
@@ -39,7 +39,7 @@ export default function AuthLink() {
             cursor: 'pointer'
           }}
         >
-          Войти
+          Вход
         </Link>
       )}
     </div>
